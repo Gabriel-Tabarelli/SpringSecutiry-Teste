@@ -1,7 +1,7 @@
 package com.example.springsecurityteste.controller;
 
-import com.example.springsecurityteste.model.entity.Usuario;
-import com.example.springsecurityteste.repository.UsuarioRepository;
+import com.example.springsecurityteste.security.model.Usuario;
+import com.example.springsecurityteste.security.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class TesteController {
 
-    private final UsuarioRepository repository;
+//    private final UsuarioRepository repository;
 
-    @PostMapping
-    public ResponseEntity<Usuario> post(@RequestBody Usuario usuario) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        usuario.setPassword(encoder.encode(usuario.getPassword()));
-        return ResponseEntity.ok(repository.save(usuario));
-    }
+//    @PostMapping
+//    public ResponseEntity<Usuario> post(@RequestBody Usuario usuario) {
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        usuario.getPessoa().setSenha(encoder.encode(usuario.getPassword()));
+//        return ResponseEntity.ok(repository.save(usuario));
+//    }
 
     @GetMapping
     public ResponseEntity<String> get() {

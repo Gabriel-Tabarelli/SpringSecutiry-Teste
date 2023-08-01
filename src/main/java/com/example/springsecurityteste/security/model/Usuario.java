@@ -1,5 +1,6 @@
-package com.example.springsecurityteste.model.entity;
+package com.example.springsecurityteste.security.model;
 
+import com.example.springsecurityteste.model.entity.Pessoa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,18 +19,25 @@ public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private String nomeCompleto;
-
-    private String username;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Pessoa pessoa;
 
     private String password;
 
-    private List<GrantedAuthority> authorities;
+    private Collection<GrantedAuthority> authorities;
+
     private boolean accountNonExpired;
+
     private boolean accountNonLocked;
+
     private boolean credentialsNonExpired;
+
     private boolean enabled;
 
+    @Override
+    public String getUsername() {
+        return pessoa.getEmail();
+    }
 }
