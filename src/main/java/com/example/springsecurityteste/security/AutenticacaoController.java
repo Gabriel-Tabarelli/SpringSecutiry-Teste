@@ -1,6 +1,9 @@
 package com.example.springsecurityteste.security;
 
 import com.example.springsecurityteste.security.model.Login;
+import com.example.springsecurityteste.security.model.Usuario;
+import com.example.springsecurityteste.security.util.CookieUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -24,18 +27,18 @@ public class AutenticacaoController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody Login login, HttpServletRequest request, HttpServletResponse response) {
-
-        SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
-
+    public ResponseEntity<Void> login(
+            @RequestBody Login login,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
 
         if (authentication.isAuthenticated()) {
-            SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-            securityContext.setAuthentication(authentication);
-            securityContextRepository.saveContext(securityContext, request, response);
+            Cookie cookie = CookieUtil.gerarCookie((Usuario) authentication.getPrincipal());
+            response.addCookie(cookie);
             return ResponseEntity.ok().build();
         }
 

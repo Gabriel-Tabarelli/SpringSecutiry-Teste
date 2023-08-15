@@ -25,7 +25,6 @@ public class BancoUtil {
         pessoa.setNome("Administrador");
         pessoa.setSobreNome("do Sistema");
         pessoa.setEmail("administrador@gmail.com");
-        pessoa.setSenha(new BCryptPasswordEncoder().encode("123"));
 
         Usuario usuario = new Usuario();
         usuario.setPessoa(pessoa);
@@ -34,6 +33,7 @@ public class BancoUtil {
         usuario.setAccountNonLocked(true);
         usuario.setCredentialsNonExpired(true);
         usuario.setAuthorities(new ArrayList<>());
+        usuario.setPassword(new BCryptPasswordEncoder().encode("123"));
 
         usuarioRepository.save(usuario);
     }

@@ -1,10 +1,7 @@
 package com.example.springsecurityteste.controller;
 
-import com.example.springsecurityteste.security.model.Usuario;
-import com.example.springsecurityteste.security.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +28,5 @@ public class TesteController {
     public ResponseEntity<String> getLogado() {
         return ResponseEntity.ok("Acessou logado");
     }
-
 
 }
