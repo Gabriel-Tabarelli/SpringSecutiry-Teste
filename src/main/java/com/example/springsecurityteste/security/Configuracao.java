@@ -9,8 +9,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -20,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 @AllArgsConstructor
+@EnableMethodSecurity // Habilita o @PreAuthorize nos metodos do controller
 public class Configuracao {
 
     private final JpaService jpaService;
@@ -31,16 +36,16 @@ public class Configuracao {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-
-        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers(HttpMethod.GET, "/teste/logado").authenticated()
-                .anyRequest().permitAll()
-        );
-
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf(AbstractHttpConfigurer::disable);
+//        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+//                .requestMatchers(HttpMethod.GET, "/teste/logado").authenticated()
+//                .requestMatchers(HttpMethod.GET, "/teste/logado/admin").hasAuthority("ADMIN")
+//                .requestMatchers(HttpMethod.GET, "/teste/logado/cliente").hasAuthority("CLIENTE")
+//                .requestMatchers(HttpMethod.GET, "/teste/logado/vendedor").hasAuthority("VENDEDOR")
+//                .anyRequest().permitAll()
+//        ); // Tem como colocar isso nos metodos do controller
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(new Filtro(), UsernamePasswordAuthenticationFilter.class);
-//        http.formLogin().loginPage("/login").permitAll();
         return http.build();
     }
 

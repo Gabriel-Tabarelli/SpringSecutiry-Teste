@@ -1,6 +1,5 @@
 package com.example.springsecurityteste.security;
 
-import com.example.springsecurityteste.security.model.Login;
 import com.example.springsecurityteste.security.model.Usuario;
 import com.example.springsecurityteste.security.util.CookieUtil;
 import jakarta.servlet.http.Cookie;
@@ -11,14 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @AllArgsConstructor
@@ -33,7 +27,7 @@ public class AutenticacaoController {
             HttpServletResponse response
     ) {
         UsernamePasswordAuthenticationToken token =
-                new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
+                new UsernamePasswordAuthenticationToken(login.username, login.password());
         Authentication authentication = authenticationManager.authenticate(token);
 
         if (authentication.isAuthenticated()) {
@@ -44,5 +38,7 @@ public class AutenticacaoController {
 
         return ResponseEntity.status(401).build();
     }
+
+    private record Login(String username, String password) {}
 
 }

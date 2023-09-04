@@ -1,6 +1,7 @@
 package com.example.springsecurityteste.util;
 
 import com.example.springsecurityteste.model.entity.Pessoa;
+import com.example.springsecurityteste.security.model.Perfil;
 import com.example.springsecurityteste.security.model.Usuario;
 import com.example.springsecurityteste.security.repository.UsuarioRepository;
 import jakarta.annotation.PostConstruct;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -32,7 +34,7 @@ public class BancoUtil {
         usuario.setAccountNonExpired(true);
         usuario.setAccountNonLocked(true);
         usuario.setCredentialsNonExpired(true);
-        usuario.setAuthorities(new ArrayList<>());
+        usuario.setAuthorities(List.of(Perfil.ADMIN, Perfil.VENDEDOR));
         usuario.setPassword(new BCryptPasswordEncoder().encode("123"));
 
         usuarioRepository.save(usuario);

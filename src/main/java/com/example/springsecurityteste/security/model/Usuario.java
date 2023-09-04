@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -26,7 +27,8 @@ public class Usuario implements UserDetails {
 
     private String password;
 
-    private Collection<GrantedAuthority> authorities;
+    @Enumerated(EnumType.STRING)
+    private List<Perfil> authorities;
 
     private boolean accountNonExpired;
 

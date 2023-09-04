@@ -2,6 +2,7 @@ package com.example.springsecurityteste.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,27 @@ public class TesteController {
     }
 
     @GetMapping("/logado")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> getLogado() {
         return ResponseEntity.ok("Acessou logado");
+    }
+
+    @GetMapping("/logado/admin")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> getAdmin() {
+        return ResponseEntity.ok("Acessou admin");
+    }
+
+    @GetMapping("/logado/cliente")
+    @PreAuthorize("hasAuthority('CLIENTE')")
+    public ResponseEntity<String> getCliente() {
+        return ResponseEntity.ok("Acessou cliente");
+    }
+
+    @GetMapping("/logado/vendedor")
+    @PreAuthorize("hasAuthority('VENDEDOR')")
+    public ResponseEntity<String> getVendedor() {
+        return ResponseEntity.ok("Acessou vendedor");
     }
 
 }
